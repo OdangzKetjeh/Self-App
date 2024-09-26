@@ -1,21 +1,46 @@
 import axios from 'axios';
 
 // Your Hugging Face API key (paste your token here)
-const API_KEY = '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';
+const API_KEY = 'hG';
 
 // Model URL for Llama-3.2-11B-Vision-Instruct
 const API_URL = 'https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-11B-Vision-Instruct';
 
+// Your biodata
+const biodata = {
+  name: "Fauzan",
+  age: 17,
+  profession: "Software Developer",
+  hobbies: ["coding", "gaming", "basketball"],
+  education: "Studied in Smkn 65 Jakarta Vacational High School",
+  achievements: ["Created AI Assistant 'Fee'", "Published AI research paper on NLP"],
+  city: "Jakarta",
+  country: "Indonesia",
+};
+
 /**
- * Function to get a response from the AI model named Fee.
+ * Function to get a response from the AI model named Fee, including biodata context.
  * @param {string} instruction - The user's input or message.
  * @returns {Promise<string>} - The AI's generated response.
  */
 export const getFeeResponse = async (instruction) => {
     try {
-      // Modify the prompt to give the model context that it's responding as "Fee"
-      const prompt = `You are Fee, a friendly and helpful AI assistant. You are made from Hugging Face api's with llama3.2 ai. Fee are made by Fauzan, Yes, a human. Respond kindly and informatively.\nHuman: ${instruction}\nFee:`;
+      // Include biodata in the prompt so the AI knows about you
+      const prompt = `
+      You are Fee, a friendly and helpful AI assistant. You are made from Hugging Face APIs with the Llama 3.2 model.
+      You have been created by Fauzan. Here is some information about Fauzan:
+      
+      - Name: ${biodata.name}
+      - Age: ${biodata.age}
+      - Profession: ${biodata.profession}
+      - Hobbies: ${biodata.hobbies.join(", ")}
+      - Education: ${biodata.education}
+      - Achievements: ${biodata.achievements.join(", ")}
+      - City: ${biodata.city}, ${biodata.country}
 
+      Respond kindly and informatively, and feel free to use this information to answer any questions about Fauzan.
+      Human: ${instruction}
+      Fee:`;
   
       // Make POST request to Hugging Face API with the user's instruction
       const response = await axios.post(
